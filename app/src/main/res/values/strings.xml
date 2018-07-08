@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">packet sender</string>
+    <string name="bytes">Builds:</string>
+    <string name="send">Send</string>
+    <string name="address">Address:</string>
+    <string name="local">192.168.0.1</string>
+    <string name="defaultBytes">a1.ff.12</string>
 </resources>
