@@ -26,26 +26,40 @@ class ClickHandler implements android.view.View.OnClickListener {
         this.ipInput = parentActivity.findViewById(R.id.address);
         this.output = parentActivity.findViewById(R.id.textView);
     }
-    private Byte[] getBytesFromByteString(String string){
+    private byte[] getBytesFromByteString(String string){
         String[] byteStrings = string.split("\\.");
-        List<Byte> byteList = new ArrayList<Byte>();
+        List<Byte> byteList = new ArrayList<>();
         for (String b : byteStrings){
             b = b.toLowerCase();
-            char first = b.charAt(0);
-            char second = b.charAt(1);
-            first -= '0';
-            if (first > 10) {
-                first -= ('a' - '0' - 10);
+            char firstDigit;
+            char secondDigit = b.charAt(0);
+            if (b.length() > 1)
+            {
+                firstDigit = b.charAt(1);
             }
-            second -= '0';
-            if (second > 10) {
-                second -= ('a' - '0' - 10);
+            else
+            {
+                firstDigit = secondDigit;
+                secondDigit = '0';
             }
-            second <<= 4;
-            byte byteVal = (byte) (first | second);
+            firstDigit -= '0';
+            if (firstDigit > 10) {
+                firstDigit -= ('a' - '0' - 10);
+            }
+            secondDigit -= '0';
+            if (secondDigit > 10) {
+                secondDigit -= ('a' - '0' - 10);
+            }
+            secondDigit <<= 4;
+            byte byteVal = (byte) (firstDigit | secondDigit);
             byteList.add(byteVal);
         }
-        return byteList.toArray(new Byte[byteList.size()]);
+        byte[] bytes = new byte[byteList.size()];
+        int i = 0;
+        for (byte b : byteList){
+            bytes[i++] = b;
+        }
+        return bytes;
     }
 
     @Override
@@ -63,15 +77,10 @@ class ClickHandler implements android.view.View.OnClickListener {
             e.printStackTrace();
         }
         if (address != null){
-            String bInput = byteInput.getText().toString();
-            Byte[] bytes = getBytesFromByteString(bInput);
-            byte[] bajtyhehe = new byte[bytes.length];
-            int i = 0;
-            for (Byte b : bytes){
-                bajtyhehe[i++] = (byte) b;
-            }
+            String byteInput = this.byteInput.getText().toString();
+            byte[] bytes = getBytesFromByteString(byteInput);
             DatagramPacket datagramPacket = null;
-            datagramPacket = new DatagramPacket(bajtyhehe, bytes.length, address, PORT);
+            datagramPacket = new DatagramPacket(bytes, bytes.length, address, PORT);
             new SendPackageTask(socket, datagramPacket).execute();
         }
         else {
