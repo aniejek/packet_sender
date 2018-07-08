@@ -82,9 +82,11 @@ class ClickHandler implements android.view.View.OnClickListener {
             DatagramPacket datagramPacket = null;
             datagramPacket = new DatagramPacket(bytes, bytes.length, address, PORT);
             new SendPackageTask(socket, datagramPacket).execute();
+            String message = "Datagram was sent.";
+            output.setText(message);
         }
         else {
-            String errorMessage = "Nie udalo sie uzyskac adresu IP.";
+            String errorMessage = "IP Address cannot be gotten.";
             output.setText(errorMessage);
         }
     }

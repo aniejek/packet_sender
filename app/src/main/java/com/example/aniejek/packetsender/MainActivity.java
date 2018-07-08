@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             TextView messageView = findViewById(R.id.textView);
-            String errorMessage = "Nie udało się stworzyć socketu.";
+            String errorMessage = "Socket wasn't created.";
             messageView.setText(errorMessage);
         }
     }
